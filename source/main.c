@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     host = argv[optind];
 
     pid = getpid();
-    Signal(SIGALRM, sig_alrm);
+    signal(SIGALRM, sig_alrm);
 
     ai = Host_serv(host, NULL, 0, 0);
 
