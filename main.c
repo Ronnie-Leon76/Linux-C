@@ -1,4 +1,4 @@
-#include "../Header/trace.h"
+#include "./trace.h"
 
 struct proto proto_v4 = {icmpcode_v4, recv_v4, NULL, NULL, NULL, NULL, 0,
                          IPPROTO_ICMP, IPPROTO_IP, IP_TTL};
@@ -15,9 +15,9 @@ u_short dport = 32768 + 666;
 
 int main(int argc, char **argv)
 {
-    int c;
+    int c, h;
     struct addrinfo *ai;
-    char *h;
+    // char *h;
     opterr = 0; /* don't want getopt () writing to stderr */
     while ((c = getopt(argc, argv, "m:v")) != -1)
     {
@@ -25,28 +25,30 @@ int main(int argc, char **argv)
         {
         case 'm':
             if ((max_ttl = atoi(optarg)) <= 1)
-                err_quit("invalid -m value");
+                // err_quit("invalid -m value");
+                exit(1);
             break;
 
         case 'v':
             verbose++;
             break;
         case '?':
-            err_quit("unrecognized option: %c", c);
+            //err_quit("unrecognized option: %c", c);
+            exit(1);
         }
     }
     if (optind != argc - 1)
-        err_quit("usage: traceroute [ -m <maxttl> -v ] <hostname>");
+        //err_quit("usage: traceroute [ -m <maxttl> -v ] <hostname>");
+        exit(1);
     host = argv[optind];
 
     pid = getpid();
     signal(SIGALRM, sig_alrm);
 
-    ai = Host_serv(host, NULL, 0, 0);
+    // ai->ai_addr = Host_serv(host, NULL, 0, 0);
 
-    h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
-    printf("traceroute to %s (%s) : %d hops max, %d data bytes\n",
-           ai->ai_canonname ? ai->ai_canonname : h, h, max_ttl, datalen);
+    // h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
+    // printf("traceroute to %d (%d) : %d hops max, %d data bytes\n", h, h, max_ttl, datalen);
 
     /* initialize according to protocol */
     if (ai->ai_family == AF_INET)
@@ -62,12 +64,13 @@ int main(int argc, char **argv)
 #endif
     }
     else
-        err_quit("unknown address family %d", ai->ai_family);
+        //err_quit("unknown address family %d", ai->ai_family);
+        exit(1);
 
     pr->sasend = ai->ai_addr; /* contains destination address */
-    pr->sarecv = Calloc(1, ai->ai_addrlen);
-    pr->salast = Calloc(1, ai->ai_addrlen);
-    pr->sabind = Calloc(1, ai->ai_addrlen);
+    pr->sarecv = calloc(1, ai->ai_addrlen);
+    pr->salast = calloc(1, ai->ai_addrlen);
+    pr->sabind = calloc(1, ai->ai_addrlen);
     pr->salen = ai->ai_addrlen;
 
     traceloop();

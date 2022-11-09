@@ -1,4 +1,4 @@
-#include "../Header/trace.h"
+#include "./trace.h"
 
 extern int gotalarm;
 
@@ -29,7 +29,8 @@ int recv_v4(int seq, struct timeval *tv)
             if (errno == EINTR)
                 continue;
             else
-                err_sys("recvfrom error");
+                //err_sys("recvfrom error");
+                exit(1);
         }
 
         ip = (struct ip *)recvbuf; /* start of IP header */
@@ -80,13 +81,13 @@ int recv_v4(int seq, struct timeval *tv)
         }
         if (verbose)
         {
-            printf(" (from %s: type = %d, code = %d)\n",
-                   Sock_ntop_host(pr->sarecv, pr->salen),
+            printf(" (type = %d, code = %d)\n",
+                   // Sock_ntop_host(pr->sarecv, pr->salen),
                    icmp->icmp_type, icmp->icmp_code);
         }
         /* Some other ICMP error, recvfrom() again */
     }
     alarm(0);               /* don't leave alarm running */
-    Gettimeofday(tv, NULL); /* get time of packet arrival */
+    gettimeofday(tv, NULL); /* get time of packet arrival */
     return (ret);
 }

@@ -1,4 +1,4 @@
-#include "../Header/trace.h"
+#include "./trace.h"
 
 const char *
 icmpcode_v6(int code)

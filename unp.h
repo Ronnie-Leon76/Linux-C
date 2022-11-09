@@ -1,5 +1,6 @@
 #ifndef __unp_h
 #define __unp_h
+#endif
 
 // #include <config.h>
 
@@ -177,9 +178,13 @@ struct if_nameindex {
 };
 #endif
 
+/*
 #ifndef HAVE_TIMESPEC_STRUCT
 struct timespec {
     time_t tv_sec;
     long tv_nsec;
 };
 #endif
+*/
+
+

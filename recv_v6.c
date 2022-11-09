@@ -1,4 +1,4 @@
-#include "../Header/trace.h"
+#include "./trace.h"
 
 extern int gotalarm;
 
