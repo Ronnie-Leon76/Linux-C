@@ -26,7 +26,11 @@ void traceloop(void)
 
     pr->sabind->sa_family = pr->sasend->sa_family;
     sport = (getpid() & 0xffff) | 0x8000; /* our source UDP port # */
-    sock_set_port(pr->sabind, pr->salen, htons(sport));
+    void sock_set_port(struct sockaddr * sa, socklen_t salen, int port)
+    {
+        sock_set_port(pr->sabind, pr->salen, htons(sport));
+    }
+
     bind(sendfd, pr->sabind, pr->salen);
 
     sig_alrm(SIGALRM);
@@ -48,7 +52,11 @@ void traceloop(void)
             rec->rec_ttl = ttl;
             gettimeofday(&rec->rec_tv, NULL);
 
-            sock_set_port(pr->sasend, pr->salen, htons(dport + seq));
+            void sock_set_port(struct sockaddr * sa, socklen_t salen, int port)
+            {
+                sock_set_port(pr->sasend, pr->salen, htons(dport + seq));
+            }
+
             sendto(sendfd, sendbuf, datalen, 0, pr->sasend, pr->salen);
 
             if ((code = (*pr->recv)(seq, &tvrecv)) == -3)
@@ -57,18 +65,29 @@ void traceloop(void)
             {
                 char str[NI_MAXHOST];
 
-                if (sock_cmp_addr(pr->sarecv, pr->salast, pr->salen) != 0)
+                int sock_cmp_addr(const struct sockaddr *sa1, const struct sockaddr *sa2, socklen_t salen)
                 {
-                    if (getnameinfo(pr->sarecv, pr->salen, str, sizeof(str),
-                                    NULL, 0, 0) == 0)
-                        printf(" %s (%s)", str,
-                               Sock_ntop_host(pr->sarecv, pr->salen));
-                    else
-                        printf(" %s",
-                               Sock_ntop_host(pr->sarecv, pr->salen));
-                    memcpy(pr->salast, pr->sarecv, pr->salen);
+                    if (sock_cmp_addr(pr->sarecv, pr->salast, pr->salen) != 0)
+                    {
+                        char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen)
+                        {
+                            if (getnameinfo(pr->sarecv, pr->salen, str, sizeof(str),
+                                            NULL, 0, 0) == 0)
+                                printf(" %s (%s)", str,
+                                       Sock_ntop_host(pr->sarecv, pr->salen));
+                            else
+                                printf(" %s",
+                                       Sock_ntop_host(pr->sarecv, pr->salen));
+                            memcpy(pr->salast, pr->sarecv, pr->salen);
+                        }
+                    }
                 }
-                tv_sub(&tvrecv, &rec->rec_tv);
+
+                void tv_sub(struct timeval * out, struct timeval * in)
+                {
+                    tv_sub(&tvrecv, &rec->rec_tv);
+                }
+
                 rtt = tvrecv.tv_sec * 1000.0 + tvrecv.tv_usec / 1000.0;
                 printf("  %.3f ms", rtt);
 

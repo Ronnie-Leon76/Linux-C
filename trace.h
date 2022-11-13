@@ -38,7 +38,7 @@ struct addrinfo *Host_serv (const char *hostname, const char *service, int famil
 int sock_cmp_addr(const struct sockaddr *sa1, const struct sockaddr *sa2, socklen_t salen);
 void sock_set_port(struct sockaddr *sa, socklen_t salen, int port);
 void traceloop(void);
-void tv_sub(struct timeval *, struct timeval *);
+void tv_sub(struct timeval *out, struct timeval *in);
 struct proto
 {
     const char *(*icmpcode)(int);

@@ -1,13 +1,19 @@
 #include "./trace.h"
 
-struct proto proto_v4 = {icmpcode_v4, recv_v4, NULL, NULL, NULL, NULL, 0,
-                         IPPROTO_ICMP, IPPROTO_IP, IP_TTL};
+struct proto proto_v4 = {
+    icmpcode_v4,
+    recv_v4,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0,
+    IPPROTO_ICMP, IPPROTO_IP, IP_TTL};
 
 #ifdef IPV6
 struct proto proto_v6 = {icmpcode_v6, recv_v6, NULL, NULL, NULL, NULL, 0,
                          IPPROTO_ICMPV6, IPPROTO_IPV6, IPV6_UNICAST_HOPS};
 #endif
-
 
 int datalen = sizeof(struct rec); /* defaults */
 int max_ttl = 30;
@@ -50,7 +56,8 @@ int main(int argc, char **argv)
     signal(SIGALRM, sig_alrm);
 
     // destination hostname or IP address is processed by host_serv() function, returning a pointer to an addrinfo structures
-    struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype){
+    struct addrinfo *Host_serv(const char *hostname, const char *service, int family, int socktype)
+    {
         ai = Host_serv(host, NULL, 0, 0);
     }
     char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen)
@@ -63,11 +70,13 @@ int main(int argc, char **argv)
     if (ai->ai_family == AF_INET)
     {
         pr = &proto_v4;
-#ifdef	IPV6
-	} else if (ai->ai_family == AF_INET6) {
-		pr = &proto_v6;
-		if (IN6_IS_ADDR_V4MAPPED(&(((struct sockaddr_in6 *)ai->ai_addr)->sin6_addr)))
-			err_quit("cannot traceroute IPv4-mapped IPv6 address");
+#ifdef IPV6
+    }
+    else if (ai->ai_family == AF_INET6)
+    {
+        pr = &proto_v6;
+        if (IN6_IS_ADDR_V4MAPPED(&(((struct sockaddr_in6 *)ai->ai_addr)->sin6_addr)))
+            err_quit("cannot traceroute IPv4-mapped IPv6 address");
 #endif
     }
     else
