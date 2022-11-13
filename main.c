@@ -50,10 +50,14 @@ int main(int argc, char **argv)
     signal(SIGALRM, sig_alrm);
 
     // destination hostname or IP address is processed by host_serv() function, returning a pointer to an addrinfo structures
-
-    ai = Host_serv(host, NULL, 0, 0);
-
-    h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
+    struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype)
+    {
+        ai = Host_serv(host, NULL, 0, 0);
+    }
+    char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen)
+    {
+        h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
+    }
     printf("traceroute to %s (%s) : %d hops max, %d data bytes\n", ai->ai_canonname ? ai->ai_canonname : h, h, max_ttl, datalen);
 
     /* initialize according to protocol */
