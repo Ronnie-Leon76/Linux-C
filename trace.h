@@ -33,6 +33,10 @@ const char *icmpcode_v6(int);
 int recv_v4(int, struct timeval *);
 int recv_v6(int, struct timeval *);
 void sig_alrm(int);
+char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen);
+struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype);
+int sock_cmp_addr(const struct sockaddr *sa1, const struct sockaddr *sa2, socklen_t salen);
+void sock_set_port(struct sockaddr *sa, socklen_t salen, int port);
 void traceloop(void);
 void tv_sub(struct timeval *, struct timeval *);
 struct proto
