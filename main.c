@@ -50,8 +50,7 @@ int main(int argc, char **argv)
     signal(SIGALRM, sig_alrm);
 
     // destination hostname or IP address is processed by host_serv() function, returning a pointer to an addrinfo structures
-    struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype)
-    {
+    struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype){
         ai = Host_serv(host, NULL, 0, 0);
     }
     char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen)
