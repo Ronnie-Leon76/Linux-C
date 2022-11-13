@@ -1,4 +1,4 @@
-# Linux-C
+# C program to trace the route to a remote host
 
 In order to run the program do the following:
 
