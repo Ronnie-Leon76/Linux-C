@@ -7,8 +7,8 @@ In order to run the program do the following:
 2. Type the following command:
 
 ```
-make -f makefile.mk
+gcc main.c
 
-sudo ./a.out www.google.com
+./main -m 30 www.google.com
 
 ```

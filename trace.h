@@ -28,11 +28,11 @@ int ttl, max_ttl;
 int verbose;
 
 /* function prototypes */
-const char *icmpcode_v4(int);
-const char *icmpcode_v6(int);
-int recv_v4(int, struct timeval *);
-int recv_v6(int, struct timeval *);
-void sig_alrm(int);
+//const char *icmpcode_v4(int code);
+const char *icmpcode_v6(int code);
+//int recv_v4(int seq, struct timeval *tv);
+int recv_v6(int seq, struct timeval *tv);
+void sig_alrm(int signo);
 char *Sock_ntop_host(const struct sockaddr *sockaddr, socklen_t addrlen);
 struct addrinfo *Host_serv (const char *hostname, const char *service, int family, int socktype);
 int sock_cmp_addr(const struct sockaddr *sa1, const struct sockaddr *sa2, socklen_t salen);
