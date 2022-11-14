@@ -2,7 +2,8 @@
 
 void traceloop(void)
 {
-    int seq, code, done;
+    int seq, code;
+    int done;
     double rtt;
     struct rec *rec;
     struct timeval tvrecv;
