@@ -7,7 +7,7 @@ In order to run the program do the following:
 2. Type the following command:
 
 ```
-gcc main.c
+gcc main.c -o main
 
 ./main -m 30 www.google.com
 
