@@ -126,7 +126,7 @@ int recv_v4(int seq, struct timeval *tv)
         /* Some other ICMP error, recvfrom() again */
     }
     alarm(0);               /* don't leave alarm running */
-    gettimeofday(tv, NULL); /* get time of packet arrival */
+    Gettimeofday(tv, NULL); /* get time of packet arrival */
     return (ret);
 }
 
