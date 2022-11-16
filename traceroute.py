@@ -3,11 +3,14 @@ import socket
 import sys
 
 
-def traceroute(hostname_or_address, max_hops=30, timeout=2):
+def traceroute(hostname_or_address, max_hops, timeout, port_number = None):
     dest_addr = socket.gethostbyname(hostname_or_address)
     proto_icmp = socket.getprotobyname("icmp")
     proto_udp = socket.getprotobyname("udp")
-    port = 33434
+    if port_number is None:
+        port = 80 
+    else:
+        port = port_number
 
     for ttl in range(1, max_hops + 1):
         rx = socket.socket(socket.AF_INET, socket.SOCK_RAW, proto_icmp)
@@ -21,8 +24,11 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
         try:
             _, curr_addr = rx.recvfrom(512)
             curr_addr = curr_addr[0]
-        except socket.error:
+                
+                
+        except socket.timeout:
             curr_addr = "*"
+            
         finally:
             end = datetime.datetime.now()
             rx.close()
@@ -35,7 +41,30 @@ def traceroute(hostname_or_address, max_hops=30, timeout=2):
 
 
 if __name__ == "__main__":
-    dest_name = sys.argv[1]
-    print(f"traceroute to {dest_name}")
-    for i, v in enumerate(traceroute(dest_name)):
-        print(f"{i+1}\t{v[0]}\t{v[1]}")
+    max_hops, port, dest_name = None, None, None
+    for j, arg in enumerate(sys.argv):
+        if arg == '-m':
+            max_hops = int(sys.argv[j + 1])
+            
+        elif arg == '-p':
+            port = int(sys.argv[j + 1])
+            
+        elif arg == '-t':
+            dest_name = sys.argv[j + 1]
+            
+        elif arg == '-h':
+            print("Usage: traceroute.py [-m max_hops] [-p port] [-t dest_name]")
+            sys.exit(0)
+      
+    if dest_name is None:
+        print("Usage: traceroute.py [-m max_hops] [-p port] [-t dest_name]")
+        sys.exit(1)
+    else:
+        print("traceroute to %s (%s), %d hops max" % (dest_name, socket.gethostbyname(dest_name), max_hops))
+        for i,v in enumerate(traceroute(dest_name, max_hops, 2, port)):
+            print("%d\t%s\t%d ms" % (i+1, v[0], v[1]/1000))      
+    
+     
+
+    
+   
