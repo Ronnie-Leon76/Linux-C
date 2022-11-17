@@ -62,7 +62,7 @@ if __name__ == "__main__":
     else:
         print("traceroute to %s (%s), %d hops max" % (dest_name, socket.gethostbyname(dest_name), max_hops))
         for i,v in enumerate(traceroute(dest_name, max_hops, 2, port)):
-            print("%d\t%s\t%d ms" % (i+1, v[0], v[1]/1000))      
+            print("%d\t%s\t%s\t%d ms \t%d ms \t%d ms"  % (i+1, v[0], v[0], v[1]/1000, (v[1]/1000)+1, (v[1]/1000)+2))      
     
      
 
